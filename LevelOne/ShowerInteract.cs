@@ -5,6 +5,8 @@ public class ShowerInteract : Interactable
 {
     [Header("Objectives")]
     [SerializeField] private PauseMenuObjectivesController objectivesController;
+    [SerializeField] private Animator fadeAnimator; // assign via inspector
+
 
     private void Awake()
     {
@@ -30,7 +32,7 @@ public class ShowerInteract : Interactable
 
     private void TurnOnShower()
     {
-        Debug.Log("Shower turned on");
-        // animations / sounds later
+        fadeAnimator.SetTrigger("FadeInOut");
+        Destroy(gameObject);
     }
 }

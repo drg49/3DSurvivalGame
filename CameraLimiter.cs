@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class BedCameraLook : MonoBehaviour
+public class CameraLimiter : MonoBehaviour
 {
     [Header("Look Settings")]
     public float sensitivity = 7.5f;      // How fast the camera rotates
