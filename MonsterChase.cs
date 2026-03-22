@@ -1,84 +1,78 @@
 using UnityEngine;
+using UnityEngine.AI;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class MonsterChase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;
 
     [Header("Settings")]
-    [SerializeField] private float moveSpeed = 3f;
-    [SerializeField] private float gravity = -9.81f;
+    [SerializeField] private float stopDistance = 1.5f;
 
-    private CharacterController controller;
-    private float velocityY;
+    private NavMeshAgent agent;
     private bool isChasing = true;
 
     private void Awake()
     {
-        controller = GetComponent<CharacterController>();
-    }
+        agent = GetComponent<NavMeshAgent>();
 
-    private void Reset()
-    {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            player = playerObj.transform;
+        // Ensure agent settings
+        agent.updatePosition = true;
+        agent.updateRotation = true;
+        agent.stoppingDistance = stopDistance;
+
+        // Snap monster to NavMesh if off
+        if (!agent.isOnNavMesh)
+        {
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(transform.position, out hit, 5f, NavMesh.AllAreas))
+            {
+                agent.Warp(hit.position);
+            }
+        }
+
+        // Auto-find player if null
+        if (player == null)
+        {
+            GameObject p = GameObject.FindGameObjectWithTag("Player");
+            if (p != null) player = p.transform;
+        }
     }
 
     private void Update()
     {
-        if (!isChasing || player == null)
-            return;
+        if (!isChasing || player == null) return;
 
         ChasePlayer();
     }
 
     private void ChasePlayer()
     {
-        // Flatten direction (no vertical movement)
-        Vector3 direction = player.position - transform.position;
-        direction.y = 0f;
-        direction.Normalize();
-
-        Vector3 move = direction * moveSpeed;
-
-        // Face player
-        if (direction != Vector3.zero)
-        {
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
-
-        ApplyGravity(move);
-    }
-
-    private void ApplyGravity(Vector3 horizontalMove)
-    {
-        if (controller.isGrounded && velocityY < 0)
-        {
-            velocityY = -2f;
-        }
-
-        velocityY += gravity * Time.deltaTime;
-
-        Vector3 finalMove = horizontalMove;
-        finalMove.y = velocityY;
-
-        controller.Move(finalMove * Time.deltaTime);
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (!isChasing)
+        // Snap player position to NavMesh
+        NavMeshHit hit;
+        if (!NavMesh.SamplePosition(player.position, out hit, 2f, NavMesh.AllAreas))
             return;
 
-        if (hit.gameObject.CompareTag("Player"))
-        {
-            Debug.Log("Monster caught the player!");
-            isChasing = false;
+        agent.SetDestination(hit.position);
 
-            // Optional: fully stop movement
-            velocityY = 0f;
+        float distance = Vector3.Distance(transform.position, hit.position);
+        if (distance <= stopDistance)
+        {
+            agent.isStopped = true;
+            isChasing = false;
+            Debug.Log("Monster caught the player!"); // Only log when caught
         }
+        else
+        {
+            if (agent.isStopped) agent.isStopped = false;
+        }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        // Visualize the stop distance
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stopDistance);
     }
 }
