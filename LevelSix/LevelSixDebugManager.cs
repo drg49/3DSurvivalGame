@@ -17,6 +17,11 @@ public class LevelSixDebugManager : MonoBehaviour
     [SerializeField] private GameObject doorKnock;
     [SerializeField] private Animator fadeAnim;
     [SerializeField] private List<GameObject> davidWaypointsToDisable;
+    [SerializeField] private GameObject missingWomanInteract;
+    [SerializeField] private GameObject missingWoman;
+    [SerializeField] private GameObject missingWomanTrigger;
+    [SerializeField] private GameObject david;
+    [SerializeField] private GameObject marcus;
 
     [SerializeField] private float debugRunSpeed = 8f;
 
@@ -27,7 +32,7 @@ public class LevelSixDebugManager : MonoBehaviour
     {
         ApplyDebugSpeed(); 
         //notifyDavid.SetActive(false);
-        notifyDavid.SetActive(true);
+        //notifyDavid.SetActive(true);
         //DisableGameObjects(davidWaypointsToDisable);
         //fadeAnim.SetTrigger("FadeInOutCarryMarcus");
         //fadeAnim.SetTrigger("FadeInOutCarryMarcusCabin");
@@ -36,7 +41,11 @@ public class LevelSixDebugManager : MonoBehaviour
         foundCabinTrigger.SetActive(false);
         fpsController.canRun = true;
         notifyFriends.SetActive(false);
-        eatDinnerTrigger.SetActive(true);
+        missingWomanTrigger.SetActive(true);
+        missingWoman.SetActive(true);
+        missingWomanInteract.SetActive(true);
+        Destroy(david);
+        Destroy(marcus);
         doorKnock.SetActive(false);
         //DebugRabbits();
     }

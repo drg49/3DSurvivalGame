@@ -18,6 +18,7 @@ public class MissingWomanInteract : Interactable
     [SerializeField] private Image reticleImage;
     [SerializeField] private GameObject missingWoman;
     [SerializeField] private GameObject demon;
+    [SerializeField] private GameObject missingWomanLight;
     [SerializeField] private AudioSource missingWomanAudio;
     [SerializeField] private AudioSource jumpscareAudioTwo;
 
@@ -30,6 +31,8 @@ public class MissingWomanInteract : Interactable
 
         // Switch camera
         cameraToActivate.gameObject.SetActive(true);
+
+        missingWomanLight.SetActive(true);
 
         Destroy(missingWomanAudio);
 
@@ -55,11 +58,12 @@ public class MissingWomanInteract : Interactable
         demon.SetActive(true);
         jumpscareAudioTwo.Play();
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
 
         // Restore player
         Destroy(cameraToActivate.gameObject);
         player.SetActive(true);
+        Destroy(missingWomanLight);
 
         Destroy(gameObject);
     }

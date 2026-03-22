@@ -11,10 +11,19 @@ public class LoopingAudioSequence : MonoBehaviour
 
     private void OnEnable()
     {
-        if (clips.Length > 0 && audioSource != null)
+        if (audioSource == null)
         {
-            loopCoroutine = StartCoroutine(PlayLoop());
+            Debug.LogWarning($"{nameof(LoopingAudioSequence)}: AudioSource is null on {gameObject.name}");
+            return;
         }
+
+        if (clips == null || clips.Length == 0)
+        {
+            Debug.LogWarning($"{nameof(LoopingAudioSequence)}: No clips assigned on {gameObject.name}");
+            return;
+        }
+
+        loopCoroutine = StartCoroutine(PlayLoop());
     }
 
     private void OnDisable()
@@ -31,17 +40,27 @@ public class LoopingAudioSequence : MonoBehaviour
 
         while (true)
         {
-            // Play current clip
-            audioSource.clip = clips[index];
+            // ?? Runtime safety check (VERY important)
+            if (audioSource == null)
+            {
+                yield break;
+            }
+
+            AudioClip clip = clips[index];
+
+            if (clip == null)
+            {
+                Debug.LogWarning($"Clip at index {index} is null.");
+                index = (index + 1) % clips.Length;
+                continue;
+            }
+
+            audioSource.clip = clip;
             audioSource.Play();
 
-            // Wait for clip to finish
-            yield return new WaitForSeconds(audioSource.clip.length);
-
-            // Wait additional delay
+            yield return new WaitForSeconds(clip.length);
             yield return new WaitForSeconds(delayBetweenClips);
 
-            // Move to next clip (loop back to start)
             index = (index + 1) % clips.Length;
         }
     }

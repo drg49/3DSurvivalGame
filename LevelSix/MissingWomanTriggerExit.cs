@@ -9,5 +9,6 @@ public class MissingWomanTriggerExit : MonoBehaviour
     {
         missingWomanAudio.SetActive(true);
         missingWomanObjective.SetActive(true);
+        Destroy(gameObject);
     }
 }
