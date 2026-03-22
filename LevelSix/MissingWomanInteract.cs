@@ -19,8 +19,14 @@ public class MissingWomanInteract : Interactable
     [SerializeField] private GameObject missingWoman;
     [SerializeField] private GameObject demon;
     [SerializeField] private GameObject missingWomanLight;
-    [SerializeField] private AudioSource missingWomanAudio;
+    [SerializeField] private GameObject missingWomanAudio;
     [SerializeField] private AudioSource jumpscareAudioTwo;
+    [SerializeField] private Transform playerRunAwayTarget;
+    [SerializeField] private GameObject runAwayObjective;
+    [SerializeField] private MonsterChase monsterChase;
+    [SerializeField] private Animator monsterAnim;
+    [SerializeField] private AudioSource chasePulseSong;
+    [SerializeField] private GameObject femaleFreakAudio;
 
     public override void Interact()
     {
@@ -58,12 +64,27 @@ public class MissingWomanInteract : Interactable
         demon.SetActive(true);
         jumpscareAudioTwo.Play();
 
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1.5f);
+
+        player.transform.SetPositionAndRotation(
+            playerRunAwayTarget.position,
+            playerRunAwayTarget.rotation
+        );
 
         // Restore player
         Destroy(cameraToActivate.gameObject);
         player.SetActive(true);
         Destroy(missingWomanLight);
+
+        runAwayObjective.SetActive(true);
+        femaleFreakAudio.SetActive(true);
+
+        // Start chase after 1 second
+        yield return new WaitForSeconds(1f);
+
+        monsterChase.enabled = true;
+        monsterAnim.SetTrigger("Chase");
+        chasePulseSong.Play();
 
         Destroy(gameObject);
     }
