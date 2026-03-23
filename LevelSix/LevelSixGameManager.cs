@@ -75,6 +75,7 @@ public class LevelSixGameManager : MonoBehaviour
             // Start chase after 1.5 seconds
             yield return new WaitForSeconds(1.5f);
             monsterChase.enabled = true;
+            monsterChase.StartChasing();
             demonAnim.SetTrigger("Chase");
             chaseMusic.Play();
         }

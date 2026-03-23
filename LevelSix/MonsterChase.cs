@@ -14,7 +14,7 @@ public class MonsterChase : MonoBehaviour
     [SerializeField] private float stopDistance = 1.5f;
 
     private NavMeshAgent agent;
-    private bool isChasing = true;
+    private bool isChasing = true; // private, controlled via methods
 
     private void Awake()
     {
@@ -62,12 +62,15 @@ public class MonsterChase : MonoBehaviour
         float distance = Vector3.Distance(transform.position, hit.position);
         if (distance <= stopDistance)
         {
-            agent.isStopped = true;
-            isChasing = false;
-            Debug.Log("Monster caught the player!"); // Only log when caught
-            cameraGlitchEffect.enabled = true;
-            fpsDemon.SetActive(true);
-            grudgeSound.Play();
+            StopChasing(); // safe stop
+            Debug.Log("Monster caught the player!");
+
+            // Trigger Game Over effects
+            if (cameraGlitchEffect != null) cameraGlitchEffect.enabled = true;
+            if (fpsDemon != null) fpsDemon.SetActive(true);
+            if (grudgeSound != null) grudgeSound.Play();
+
+            // Optional: deactivate monster
             gameObject.SetActive(false);
         }
         else
@@ -81,5 +84,19 @@ public class MonsterChase : MonoBehaviour
         // Visualize the stop distance
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, stopDistance);
+    }
+
+    /// <summary> Start chasing the player. </summary>
+    public void StartChasing()
+    {
+        isChasing = true;
+        if (agent != null) agent.isStopped = false;
+    }
+
+    /// <summary> Stop chasing the player. </summary>
+    public void StopChasing()
+    {
+        isChasing = false;
+        if (agent != null) agent.isStopped = true;
     }
 }
