@@ -27,6 +27,7 @@ public class MissingWomanInteract : Interactable
     [SerializeField] private Animator monsterAnim;
     [SerializeField] private AudioSource chasePulseSong;
     [SerializeField] private GameObject femaleFreakAudio;
+    [SerializeField] private GameObject playerSafeTarget;
 
     public override void Interact()
     {
@@ -78,6 +79,8 @@ public class MissingWomanInteract : Interactable
 
         // Show reticle again
         reticleImage.enabled = true;
+
+        playerSafeTarget.SetActive(true);
 
         runAwayObjective.SetActive(true);
         femaleFreakAudio.SetActive(true);
