@@ -76,6 +76,9 @@ public class MissingWomanInteract : Interactable
         player.SetActive(true);
         Destroy(missingWomanLight);
 
+        // Show reticle again
+        reticleImage.enabled = true;
+
         runAwayObjective.SetActive(true);
         femaleFreakAudio.SetActive(true);
 

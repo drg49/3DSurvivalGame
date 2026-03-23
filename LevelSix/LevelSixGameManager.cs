@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class LevelSixGameManager : MonoBehaviour
 {
@@ -21,9 +22,10 @@ public class LevelSixGameManager : MonoBehaviour
     [SerializeField] private GameObject demon;
     [SerializeField] private GameObject demonAudio;
     [SerializeField] private AudioSource chaseMusic;
-    [SerializeField] private GameObject runAwayObjective;
     [SerializeField] private MonsterChase monsterChase;
     [SerializeField] private Animator demonAnim;
+    [SerializeField] private Image reticleImage;
+    [SerializeField] private FirstPersonController playerFPS;
 
     private void Awake()
     {
@@ -62,15 +64,19 @@ public class LevelSixGameManager : MonoBehaviour
     {
         if (gameOverPanel != null)
         {
+            // Reactivate player controls and demon
+            playerFPS.enabled = true;
             demon.SetActive(true);
             gameOverPanel.SetActive(false);
+
+            // Show reticle again
+            reticleImage.enabled = true;
 
             // Hide and lock cursor
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
 
             demonAudio.SetActive(true);
-            runAwayObjective.SetActive(true);
 
             // Start chase after 1.5 seconds
             yield return new WaitForSeconds(1.5f);

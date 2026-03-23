@@ -15,8 +15,8 @@ public class WaitAndGameOver : MonoBehaviour
     [SerializeField] private MonsterChase monsterChase;
     [SerializeField] private Transform demonOriginalTarget;
     [SerializeField] private GameObject player;
+    [SerializeField] private FirstPersonController playerFPS;
     [SerializeField] private Transform playerRunAwayTarget;
-    [SerializeField] private GameObject runAwayObjective;
 
 
     private void OnEnable()
@@ -28,6 +28,9 @@ public class WaitAndGameOver : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         gameOverPanel.SetActive(true);
+
+        // Pause player controls while we move it back to original position
+        playerFPS.enabled = false;
 
         // Show cursor
         Cursor.lockState = CursorLockMode.None;
@@ -54,9 +57,6 @@ public class WaitAndGameOver : MonoBehaviour
            playerRunAwayTarget.position,
            playerRunAwayTarget.rotation
         );
-
-        // We'll need to restart this
-        runAwayObjective.SetActive(false);
 
         // Must be called last!
         // Hides the FPS demon (which this script is attached to)

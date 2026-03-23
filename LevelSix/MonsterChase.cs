@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class MonsterChase : MonoBehaviour
@@ -9,6 +10,7 @@ public class MonsterChase : MonoBehaviour
     [SerializeField] private GameObject fpsDemon;
     [SerializeField] private CameraGlitchEffect cameraGlitchEffect;
     [SerializeField] private AudioSource grudgeSound;
+    [SerializeField] private Image reticleImage;
 
     [Header("Settings")]
     [SerializeField] private float stopDistance = 1.5f;
@@ -63,7 +65,11 @@ public class MonsterChase : MonoBehaviour
         if (distance <= stopDistance)
         {
             StopChasing(); // safe stop
-            Debug.Log("Monster caught the player!");
+            
+            // MONSTER CATCHES PLAYER!
+
+            // Hide reticle during game over
+            reticleImage.enabled = false;
 
             // Trigger Game Over effects
             if (cameraGlitchEffect != null) cameraGlitchEffect.enabled = true;
