@@ -64,7 +64,7 @@ public class MissingWomanInteract : Interactable
         demon.SetActive(true);
         jumpscareAudioTwo.Play();
 
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(1f);
 
         player.transform.SetPositionAndRotation(
             playerRunAwayTarget.position,
@@ -79,8 +79,8 @@ public class MissingWomanInteract : Interactable
         runAwayObjective.SetActive(true);
         femaleFreakAudio.SetActive(true);
 
-        // Start chase after 1 second
-        yield return new WaitForSeconds(1f);
+        // Start chase after 2 seconds
+        yield return new WaitForSeconds(2f);
 
         monsterChase.enabled = true;
         monsterAnim.SetTrigger("Chase");

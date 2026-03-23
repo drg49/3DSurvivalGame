@@ -6,6 +6,9 @@ public class MonsterChase : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Transform player;
+    [SerializeField] private GameObject fpsDemon;
+    [SerializeField] private CameraGlitchEffect cameraGlitchEffect;
+    [SerializeField] private AudioSource grudgeSound;
 
     [Header("Settings")]
     [SerializeField] private float stopDistance = 1.5f;
@@ -62,6 +65,10 @@ public class MonsterChase : MonoBehaviour
             agent.isStopped = true;
             isChasing = false;
             Debug.Log("Monster caught the player!"); // Only log when caught
+            cameraGlitchEffect.enabled = true;
+            fpsDemon.SetActive(true);
+            grudgeSound.Play();
+            Destroy(gameObject);
         }
         else
         {
