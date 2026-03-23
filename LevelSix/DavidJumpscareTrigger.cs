@@ -12,6 +12,7 @@ public class DavidJumpscareTrigger : MonoBehaviour
     [SerializeField] private GameObject digitalBarkSong;
     [SerializeField] private AudioSource jumpscareAudio;
     [SerializeField] private GameObject investigateObjective;
+    [SerializeField] private Transform tellDavidTarget;
 
     private Collider triggerCollider;
 
@@ -60,6 +61,10 @@ public class DavidJumpscareTrigger : MonoBehaviour
     {
         Destroy(davidJumpscareCam);
         player.SetActive(true);
+        david.transform.SetPositionAndRotation(
+            tellDavidTarget.position,
+            tellDavidTarget.rotation
+        );
         investigateObjective.SetActive(true);
         Destroy(gameObject);
     }
