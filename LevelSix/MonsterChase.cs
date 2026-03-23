@@ -68,7 +68,7 @@ public class MonsterChase : MonoBehaviour
             cameraGlitchEffect.enabled = true;
             fpsDemon.SetActive(true);
             grudgeSound.Play();
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
         else
         {
