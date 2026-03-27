@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class LevelSixFadePanel : MonoBehaviour
 {
@@ -191,5 +192,10 @@ public class LevelSixFadePanel : MonoBehaviour
     {
         marcusPW.enabled = false;
         marcusPW.enabled = true;
+    }
+
+    private void GoToLevelSeven()
+    {
+        SceneManager.LoadScene("SeventhLevel_Wonderland");
     }
 }

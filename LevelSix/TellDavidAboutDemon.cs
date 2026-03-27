@@ -4,6 +4,7 @@ public class TellDavidAboutDemon : NPCDialogue
 {
     [SerializeField] private GameObject flashlight;
     [SerializeField] private GameObject flashlightLight;
+    [SerializeField] private GameObject goToSleep;
 
     private void OnEnable()
     {
@@ -27,6 +28,7 @@ public class TellDavidAboutDemon : NPCDialogue
     {
         Destroy(cameraToActivate.gameObject);
         player.SetActive(true);
+        goToSleep.SetActive(true);
         Destroy(gameObject);
     }
 }
