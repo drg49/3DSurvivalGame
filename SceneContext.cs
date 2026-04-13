@@ -1,7 +1,8 @@
 public enum LevelMode
 {
     LevelOne,
-    LevelThree
+    LevelThree,
+    LastLevel
 }
 
 public static class SceneContext

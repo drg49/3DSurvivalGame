@@ -39,9 +39,13 @@ public class LevelOneManager : MonoBehaviour
     private void Start()
     {
         // Scene config happens ON LOAD
-        // Level 1 shares a scene with Level 3
+        // Level 1 shares a scene with Level 3 & Last Level
         switch (SceneContext.CurrentLevelMode)
         {
+            case LevelMode.LastLevel:
+                SetupLastLevel();
+                break;
+
             case LevelMode.LevelThree:
                 SetupLevelThree();
                 break;
@@ -73,6 +77,18 @@ public class LevelOneManager : MonoBehaviour
         );
 
         // Destroy Level One Events & Objects
+        foreach (GameObject obj in objectsToDestroyOnLevelThree)
+        {
+            Destroy(obj);
+        }
+    }
+
+    private void SetupLastLevel()
+    {
+        foreach (GameObject obj in objectsToDestroyOnLevelOne)
+        {
+            Destroy(obj);
+        }
         foreach (GameObject obj in objectsToDestroyOnLevelThree)
         {
             Destroy(obj);

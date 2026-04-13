@@ -1,16 +1,11 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelSevenFadePanel : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private void GoToLastLevel()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        SceneContext.CurrentLevelMode = LevelMode.LastLevel;
+        SceneManager.LoadScene("FirstLevel_Apartment");
     }
 }
