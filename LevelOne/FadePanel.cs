@@ -61,6 +61,28 @@ public class FadePanel : MonoBehaviour
         {
             return;
         }
+
+        if (SceneContext.CurrentLevelMode == LevelMode.LastLevel)
+        {
+            InstructionTextAlphaFader fader = FindFirstObjectByType<InstructionTextAlphaFader>();
+            fader.Show("Was it all a dream?", 5.5f);
+
+            // Start delayed text
+            StartCoroutine(ShowInteractionTextAfterDelay(5.5f + 3f));
+            return;
+        }
+
+        ShowInteractionText();
+    }
+
+    private IEnumerator ShowInteractionTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ShowInteractionText();
+    }
+
+    private void ShowInteractionText()
+    {
         string button = inputActions.Player.Interact.bindings[0].ToDisplayString();
         interactionText.text = $"Hold [{button}] to get out of bed";
     }
@@ -282,5 +304,10 @@ public class FadePanel : MonoBehaviour
 
         // Go to next scene
         SceneManager.LoadScene("ThirdLevel_OnTheRoad");
+    }
+
+    public void GoToCredits()
+    {
+        SceneManager.LoadScene("Credits");
     }
 }

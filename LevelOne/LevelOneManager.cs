@@ -23,6 +23,9 @@ public class LevelOneManager : MonoBehaviour
     [SerializeField] private List<GameObject> objectsToDestroyOnLevelThree;
     [SerializeField] private Transform levelThreeSpawn;
 
+    [Header("LastLevel")]
+    [SerializeField] private GameObject lastJumpscare;
+
     // one-time interaction guard to determine if player has already left the bed
     private bool hasInteracted = false;
 
@@ -93,6 +96,7 @@ public class LevelOneManager : MonoBehaviour
         {
             Destroy(obj);
         }
+        lastJumpscare.SetActive(true);
     }
 
     private void OnEnable()
