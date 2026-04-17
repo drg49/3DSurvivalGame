@@ -31,6 +31,9 @@ public class RabbitAI : MonoBehaviour
     private bool isMoving = false;
     private float idleTimer;
 
+    // NEW: manual input tracking
+    private bool wasPressedLastFrame = false;
+
     void Start()
     {
         SetIdle();
@@ -43,6 +46,11 @@ public class RabbitAI : MonoBehaviour
         {
             interactionTextWorld.gameObject.SetActive(false);
             SetupTextAlwaysVisible(interactionTextWorld);
+        }
+
+        if (interactAction != null && interactAction.action != null)
+        {
+            interactAction.action.Enable();
         }
     }
 
@@ -160,15 +168,23 @@ public class RabbitAI : MonoBehaviour
                 string buttonName = interactAction.action.bindings[0].ToDisplayString();
                 interactionTextWorld.text = $"Grab [{buttonName}]";
 
-                if (interactAction.action.WasPressedThisFrame())
-                    TakeRabbit();
+                // ? FIX: manual "pressed this frame"
+                bool isPressed = interactAction.action.IsPressed();
 
+                if (isPressed && !wasPressedLastFrame)
+                {
+                    TakeRabbit();
+                }
+
+                wasPressedLastFrame = isPressed;
                 return;
             }
         }
 
         if (interactionTextWorld.gameObject.activeSelf)
             interactionTextWorld.gameObject.SetActive(false);
+
+        wasPressedLastFrame = false;
     }
 
     private void TakeRabbit()
